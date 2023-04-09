@@ -1,0 +1,19 @@
+.action-link {
+  padding: 0 5px;
+  display: inline;
+}
+
+.list-users {
+  margin: 5px;
+  padding: 20px;
+}
+
+.username-link {
+  min-width: 200px;
+  display: inline-block;
+}
+
+.user-content {
+  display: flex;
+  align-items: center;
+}

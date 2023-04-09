@@ -6,6 +6,7 @@
   }
 
   .main-content{
-    margin-left: 50 px;
+    padding-left: 50 px;
+    min-height: 700 px;
   }
   

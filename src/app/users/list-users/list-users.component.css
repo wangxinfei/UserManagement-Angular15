@@ -17,3 +17,9 @@
   display: flex;
   align-items: center;
 }
+
+table {
+  width: 95%;
+  padding-right: 20 px;
+}
+

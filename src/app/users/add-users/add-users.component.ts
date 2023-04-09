@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from 'src/app/services/user.service';
 
@@ -17,9 +17,11 @@ export class AddUsersComponent {
 
   ngOnInit(): void {
     this.addUserForm = this.formBuilder.group({
-      'username': new FormControl(''),
-      'email': new FormControl(''),
-      'phone':new FormControl('')
+      'name': new FormControl(''),
+      'username': new FormControl('', [Validators.required, Validators.minLength(3)]),
+      'email': new FormControl('', [Validators.required, Validators.email]),
+      'phone':new FormControl('', [Validators.required, Validators.maxLength(20)]),
+      'address.street': new FormControl('')
     })
   }
 

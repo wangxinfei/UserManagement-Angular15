@@ -1,19 +1,36 @@
 <mat-card class="user-details">
     <mat-card-content *ngIf="userDetails">
-        <mat-card-title> {{userDetails.name}} </mat-card-title>
-        <mat-card-content>
-            {{userDetails.id}}<br>
-            {{userDetails.username}}<br>
-            {{userDetails.email}}<br>
-            {{userDetails.address.street}},
-            {{userDetails.address.suite}},
-            {{userDetails.address.city}},
-            {{userDetails.address.zipcode}},
-            ({{userDetails.address.geo.lat}}, {{userDetails.address.geo.lng}})<br>
-            {{userDetails.phone}}<br>
-            {{userDetails.website}}<br>
-            {{userDetails.company.name}}<br>
-        </mat-card-content>
+      <table>
+        <tr>
+          <td>Id:</td>
+          <td>{{userDetails.id}}</td>
+        </tr>
+        <tr>
+          <td>Username:</td>
+          <td>{{userDetails.username}}</td>
+        </tr>
+        <tr>
+          <td>Email:</td>
+          <td>{{userDetails.email}}</td>
+        </tr>
+        <tr>
+          <td>Address:</td>
+          <td>{{userDetails.address.street}}, {{userDetails.address.suite}}, {{userDetails.address.city}}, {{userDetails.address.zipcode}}, ({{userDetails.address.geo.lat}}, {{userDetails.address.geo.lng}})</td>
+        </tr>
+        <tr>
+          <td>Phone Number:</td>
+          <td>{{userDetails.phone}}</td>
+        </tr>
+        <tr>
+          <td>Website:</td>
+          <td>{{userDetails.website}}</td>
+        </tr>
+        <tr>
+          <td>Company:</td>
+          <td>{{userDetails.company.name}}</td>
+        </tr>
+      </table>
     </mat-card-content>
   </mat-card>
+
   

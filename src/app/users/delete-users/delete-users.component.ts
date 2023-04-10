@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
@@ -8,25 +8,34 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './delete-users.component.html',
   styleUrls: ['./delete-users.component.css']
 })
-export class DeleteUsersComponent {
+export class DeleteUsersComponent implements OnInit {
   userId: string = '';
-  constructor(private activatedRoute: ActivatedRoute,
-              private userService: UserService,
-              private _snackBar: MatSnackBar) {}
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private userService: UserService,
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(data =>{
       this.userId = data['id'];
+      if (this.userId) {
+        this.deleteUser();
+      }
     });
+  }
 
-    if(this.userId) {
-      this.userService.deleteUser(this.userId).subscribe(data => {
-        this._snackBar.open("User deleted successfully");
-        console.log("User Deleted");
-      }, err => {
-        this._snackBar.open("Unable to delete user");
+  private deleteUser(): void {
+    this.userService.deleteUser(this.userId).subscribe(
+      data => {
+        this._snackBar.open('User deleted successfully');
+        console.log('User Deleted');
+      },
+      err => {
+        this._snackBar.open('Unable to delete user');
         console.log(err);
-      });
-    }
+      }
+    );
   }
 }

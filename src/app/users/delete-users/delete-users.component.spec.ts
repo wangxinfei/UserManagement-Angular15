@@ -1,49 +1,54 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { DeleteUsersComponent } from './delete-users.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatCardModule } from '@angular/material/card';
-import { BehaviorSubject, of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { of } from 'rxjs';
+import { MatCardModule } from '@angular/material/card';
 
 describe('DeleteUsersComponent', () => {
   let component: DeleteUsersComponent;
   let fixture: ComponentFixture<DeleteUsersComponent>;
-  let userService: UserService;
+  let mockActivatedRoute: any;
+  let mockUserService: any;
+  let mockSnackBar: any;
 
   beforeEach(async () => {
-    const paramMapSubject = new BehaviorSubject({ id: '1' });
+    mockActivatedRoute = {
+      params: of({id: '1'})
+    };
+    mockUserService = jasmine.createSpyObj('UserService', ['deleteUser']);
+    mockSnackBar = jasmine.createSpyObj('MatSnackBar', ['open']);
+
     await TestBed.configureTestingModule({
       declarations: [ DeleteUsersComponent ],
-      imports: [ HttpClientTestingModule, MatCardModule ],
+      imports: [MatCardModule],
       providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            paramMap: paramMapSubject
-          }
-        },
-        {
-          provide: MatSnackBar,
-          useValue: {
-            open: () => {}
-          }
-        },
-        UserService // add UserService to providers
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: UserService, useValue: mockUserService },
+        { provide: MatSnackBar, useValue: mockSnackBar }
       ]
     })
     .compileComponents();
-  
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(DeleteUsersComponent);
     component = fixture.componentInstance;
-    userService = TestBed.inject(UserService); // inject UserService
-    spyOn(userService, 'deleteUser').and.returnValue(of({})); // mock deleteUser method
-
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should delete user successfully', fakeAsync(() => {
+    const deleteUserResponse = { success: true, message: 'User deleted successfully' };
+    mockUserService.deleteUser.and.returnValue(of(deleteUserResponse));
+    
+    fixture.detectChanges();
+    tick();
+
+    expect(mockUserService.deleteUser).toHaveBeenCalledWith('1');
+    expect(mockSnackBar.open).toHaveBeenCalledWith('User deleted successfully');
+  }));
 });

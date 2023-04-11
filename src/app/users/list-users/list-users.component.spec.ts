@@ -51,4 +51,14 @@ describe('ListUsersComponent', () => {
 
     expect(component.listUsers).toEqual(users);
   });
+
+  it('should get a empty list of users', () => {
+    const users: User[] = [];
+
+    userService.listUsers.and.returnValue(of(users));
+
+    fixture.detectChanges();
+
+    expect(component.listUsers).toEqual(users);
+  });
 });

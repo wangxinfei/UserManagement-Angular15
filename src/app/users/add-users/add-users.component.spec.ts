@@ -7,6 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card'; // import MatCardModule
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { UserService } from 'src/app/services/user.service';
+
 
 describe('AddUsersComponent', () => {
   let component: AddUsersComponent;
@@ -22,7 +25,9 @@ describe('AddUsersComponent', () => {
         MatInputModule,
         MatSelectModule,
         MatFormFieldModule,
-        MatCardModule // add MatCardModule to imports
+        MatCardModule,
+        BrowserAnimationsModule,
+        NoopAnimationsModule
       ]
     })
     .compileComponents();
@@ -37,4 +42,33 @@ describe('AddUsersComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should invalidate the form when form fields are empty', () => {
+    expect(component.addUserForm.valid).toBeFalsy();
+  });
+
+  it('should validate the form when form fields are filled', () => {
+    component.addUserForm.controls['name'].setValue('John Doe');
+    component.addUserForm.controls['username'].setValue('John Doe');
+    component.addUserForm.controls['email'].setValue('john@example.com');
+    component.addUserForm.controls['phone'].setValue('1234567890');
+    component.addUserForm.controls['address.street'].setValue('1234567890');
+    expect(component.addUserForm.valid).toBeTruthy();
+  });
+  
+  
+  it('should not submit the form when form is invalid', () => {
+    const userService = TestBed.inject(UserService);
+    spyOn(userService, 'addUser').and.callThrough();
+  
+    component.addUserForm.controls['name'].setValue('John Doe');
+    component.addUserForm.controls['username'].setValue('John Doe');
+    component.addUserForm.controls['email'].setValue('');
+    component.addUserForm.controls['phone'].setValue('1234567890');
+  
+    component.ngOnInit();
+  
+    expect(userService.addUser).not.toHaveBeenCalled();
+  });
+  
 });

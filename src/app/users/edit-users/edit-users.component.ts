@@ -53,13 +53,16 @@ export class EditUsersComponent {
   }
 
   updateUser() {
-    console.log(this.editUserForm.value);
-    this.userService.updateUser(this.userId, this.editUserForm.value).subscribe(data =>{
-      this._snackBar.open("User updated successfully");
-      console.log("User Updated");
+    if (this.editUserForm) {
+      console.log(this.editUserForm.value);
+      this.userService.updateUser(this.userId, this.editUserForm.value).subscribe(data => {
+        this._snackBar.open("User updated successfully");
+        console.log("User Updated");
       }, err => {
-      this._snackBar.open("Unable to update user");
-      console.log(err);
-    })
+        this._snackBar.open("Unable to update user");
+        console.log(err);
+      });
+    }
   }
+  
 }
